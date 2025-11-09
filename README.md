@@ -23,7 +23,7 @@ We aim to analyze consumption trends, seasonal patterns, and forecast future dem
 ```
 Forecast-Of-The-Daily-Electric-Power-Consumption/
 ├── docs/ # Weekly PDF reports
-│ ├── week-01-report.pdf
+│ ├── Week_2_Project_work_2.pdf
 ├── notebooks/ # Weekly Jupyter notebooks
 │ ├── eda.ipynb
 ├── requirements.txt # Python dependencies
@@ -50,7 +50,7 @@ Forecast-Of-The-Daily-Electric-Power-Consumption/
 
 | Week | Task Description | Deliverables |
 |------|------------------|--------------|
-| **Week 1** | Time-series visualization, EDA, STL decomposition, autocorrelation, and partitioning plan | `week-01-eda.ipynb` + `week-01-report.pdf` |
+| **Week 1** | Time-series visualization, EDA, STL decomposition, autocorrelation, and partitioning plan | `eda.ipynb` + `Week_2_Project_work_2.pdf` |
 
 ---
 
