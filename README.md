@@ -1,58 +1,48 @@
-# Electric Power Consumption — Time Series Analysis Project
+# Daily Electric Power Consumption Forecasting
 
-## Overview
+Group project for a time-series machine learning course at LUT University (autumn 2025):
+forecasting a household's daily electricity use from the
+[UCI Individual Household Electric Power Consumption dataset](https://www.kaggle.com/datasets/uciml/electric-power-consumption-data-set)
+(about 4 years of one-minute readings, resampled to 1,442 daily values).
 
-This repository contains our **group project** on time-series analysis using the **UCI/Kaggle Individual Household Electric Power Consumption Dataset**.  
-The project involves weekly submissions including exploratory data analysis, time-series decomposition, autocorrelation analysis, forecasting preparation, and later model development.
+## Results
 
-The dataset records measurements of electric power consumption in one household with a one-minute sampling rate over several years.  
-We aim to analyze consumption trends, seasonal patterns, and forecast future demand using classical and modern time series techniques.
+Final model: a Transformer encoder (2 layers, 4 heads, d_model 64) that reads a 30-day window
+of 8 daily features and predicts the next 7 days of `y`, the daily average energy not covered
+by the three sub-meters (Wh per minute). Chronological 80/20 train/test split, scaler fitted on
+training data only.
 
----
+| Horizon | Day +1 | Day +2 | Day +3 | Day +4 | Day +5 | Day +6 | Day +7 |
+|---|---|---|---|---|---|---|---|
+| RMSE | 1.91 | 2.04 | 2.14 | 2.21 | 2.26 | 2.30 | 2.77 |
+| MAE | 1.39 | 1.56 | 1.60 | 1.67 | 1.70 | 1.69 | 2.02 |
 
-## 👥 Group Members / Contributors
+Earlier weeks compared univariate and multivariate RNN and LSTM models, tuning the input
+window, batch size and number of epochs (see `notebooks/Week4/` and `multivariate_new.ipynb`).
 
-- [**Chamath Wijerathne**](https://github.com/ChamathWijerathne)  
-- [**Nada Rahali**](https://github.com/NadaRahali)  
-- [**Tanjuma Haque**](https://github.com/tanjuma)
+## Team
 
----
+| Member | Main work |
+|---|---|
+| [Chamath Wijerathne](https://github.com/ChamathWijerathne) | EDA, multivariate LSTM experiments, Transformer forecasting model, week 5 report |
+| [Nada Rahali](https://github.com/NadaRahali) | Data pretreatment, week 4 univariate and multivariate RNN/LSTM notebooks |
+| [Tanjuma Haque](https://github.com/tanjuma) | Group member |
 
-## 📁 Repository Structure
+## Repository structure
 
 ```
-Forecast-Of-The-Daily-Electric-Power-Consumption/
-├── docs/ # Weekly PDF reports
-│ ├── Week_2_Project_work_2.pdf
-├── notebooks/ # Weekly Jupyter notebooks
-│ ├── eda.ipynb
-├── requirements.txt # Python dependencies
-├── .gitignore # Ignored files and folders
-├── README.md # Project documentation
+notebooks/
+  eda.ipynb                  week 1: visualisation, STL decomposition, autocorrelation
+  Data_pretreatment.ipynb    week 2: missing values, interpolation, resampling
+  Week4/univariate.ipynb     week 4: univariate RNN/LSTM
+  Week4/multivariate.ipynb   week 4: multivariate RNN/LSTM
+  multivariate_new.ipynb     week 4, revised after feedback
+  transformerNN.ipynb        week 5: first Transformer version
+  transformerNN_new.ipynb    week 5: final Transformer model (results above)
+docs/
+  Week_2_Project_work_2.pdf  data pretreatment report
+  Week_5___Project_work_2.pdf  final report
 ```
-
-> 🗒️ *Note:* The `docs/` folder contains reports in PDF format, while `notebooks/` holds the corresponding `.ipynb` notebooks.  
-> Both are updated weekly with new analysis cells and results.
-
----
-
-## Project Objectives  
-1. Perform **exploratory data analysis (EDA)** to understand trends, distributions, and missing values.  
-2. Conduct **time-series decomposition** to identify trend, seasonality, and residual components.  
-3. Perform **autocorrelation analysis** to understand temporal dependencies.  
-4. Design a **data partitioning strategy** for robust model training and validation.  
-5. Build and evaluate **forecasting models** (later weeks).  
-6. Document progress weekly through notebooks and reports.
-
----
-
-## 🗓️ Weekly Deliverables  
-
-| Week | Task Description | Deliverables |
-|------|------------------|--------------|
-| **Week 1** | Time-series visualization, EDA, STL decomposition, autocorrelation, and partitioning plan | `eda.ipynb` + `Week_2_Project_work_2.pdf` |
-
----
 
 ## 📊 Dataset Information  
 
@@ -62,28 +52,15 @@ This dataset contains measurements of electric power consumption in a single hou
 
 **Main Columns Used:**
 | Column | Description | Unit |
-|---------|-------------|------|
-| `Global_active_power` | Household global minute-averaged active power | kilowatts (kW) |
-| `Global_reactive_power` | Global reactive power | kilowatts (kW) |
-| `Voltage` | Average voltage | volts (V) |
-| `Global_intensity` | Average current intensity | amperes (A) |
-| `Sub_metering_1/2/3` | Energy sub-metered in different areas | watt-hours (Wh) |
+|---
 
----
+## Running the notebooks
 
-## Environment Setup  
-
-### Create & Activate a Virtual Environment  
 ```bash
-# Create environment
 python -m venv .venv
-
-# Activate (Linux/macOS)
-source .venv/bin/activate
-
-# Activate (Windows)
-.venv\Scripts\activate
-
-All notebooks were developed using Python 3.10+ with the following key libraries:
-
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+jupyter lab
+```
+
+The notebooks download the dataset with `kagglehub`, so a Kaggle account may be needed.
